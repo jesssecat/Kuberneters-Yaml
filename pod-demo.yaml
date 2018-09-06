@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-demo
+  namespace: default
+  labels:
+    app: myapp
+    tier: frontend
+  annotations:
+    node1/create-by: "cluster admin"  #备注
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+    ports: 
+    - name: http
+      containerPort: 80
+    - name: https
+      containerPort: 443
+  - name: busybox
+    image: busybox:latest
+    imagePullPolicy: IfNotPresent      #Always,Never,IfNotPresent 分别对应：总是去下载，总是不去下载，如果本地不存在就下载
+    command:
+    - "/bin/sh"
+    - "-c"
+    - "sleep 3600"
+  nodeSelector:
+    disktype: ssd
